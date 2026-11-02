@@ -99,12 +99,15 @@ func (f *File) unzipToTemp(zipFile *zip.File) (string, error) {
 	}
 	rc, err := zipFile.Open()
 	if err != nil {
+		_ = tmp.Close()
 		return tmp.Name(), err
 	}
 	if _, err = io.Copy(tmp, rc); err != nil {
+		_ = tmp.Close()
 		return tmp.Name(), err
 	}
 	if err = rc.Close(); err != nil {
+		_ = tmp.Close()
 		return tmp.Name(), err
 	}
 	return tmp.Name(), tmp.Close()
